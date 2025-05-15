@@ -1,7 +1,9 @@
 import pandas as pd
 
-# feature_summarizer.py
 class FeatureSummarizer:
+    """
+    Prepares an LLM-friendly summary dict from OpenSMILE DataFrame.
+    """
     DEFAULT_FEATURE_MAP = {
         'F0semitoneFrom27.5Hz_sma3nz_amean': 'mean_pitch_semitone',
         'F0semitoneFrom27.5Hz_sma3nz_stddev': 'pitch_stddev',
@@ -23,5 +25,3 @@ class FeatureSummarizer:
             for col, key in self.feature_map.items()
             if col in row
         }
-
-    

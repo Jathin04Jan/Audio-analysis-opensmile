@@ -1,9 +1,10 @@
-import subprocess
 import opensmile
 import pandas as pd
 
-
 class OpenSmileProcessor:
+    """
+    Wraps the OpenSMILE Python API to extract functionals from an audio file.
+    """
     def __init__(self):
         self.smile = opensmile.Smile(
             feature_set=opensmile.FeatureSet.eGeMAPSv02,
@@ -11,7 +12,6 @@ class OpenSmileProcessor:
         )
 
     def extract_features(self, audio_path: str) -> pd.DataFrame:
-        # returns a DF of functionals
         df = self.smile.process_file(audio_path)
         if df.empty:
             print("No data processed from the audio file.")
