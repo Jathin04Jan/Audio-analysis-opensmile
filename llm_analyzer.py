@@ -5,7 +5,6 @@ from langchain_community.chat_models import ChatOpenAI
 class LLMAnalyzer:
     """
     Uses LangChain to prompt OpenAI LLM for a human-readable tone analysis.
-    Model is set to o4-mini.
     """
     def __init__(self, openai_api_key: str, model_name: str = 'gpt-4.1-mini', temperature: float = 0.7):
         self.llm = ChatOpenAI(openai_api_key=openai_api_key, model_name=model_name, temperature=temperature)
@@ -21,4 +20,5 @@ class LLMAnalyzer:
 
     def analyze(self, features_dict: dict) -> str:
         features_json = json.dumps(features_dict, indent=2)
+        print("Features JSON:", features_json)
         return self.chain.run(features=features_json)
