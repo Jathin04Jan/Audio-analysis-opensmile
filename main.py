@@ -1,24 +1,40 @@
-# main.py
+import argparse
 from open_smile_processor import OpenSmileProcessor
 from feature_summarizer import FeatureSummarizer
 from llm_analyzer import LLMAnalyzer
+from dotenv import load_dotenv
+import os
 
-def main(audio_file):
-    # 1) Extract
+load_dotenv()
+
+
+def main(audio_file: str):
+    # 1) Extract acoustic functionals
     smile = OpenSmileProcessor()
     df = smile.extract_features(audio_file)
 
-    # 2) Summarize
+    # 2) Summarize features
     summarizer = FeatureSummarizer()
     features = summarizer.summarize(df)
     if not features:
         print("No features extracted—check your audio or config.")
         return
 
-    # 3) Analyze
-    analyzer = LLMAnalyzer(api_key='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')
-    print(analyzer.analyze(features))
+    # 3) Generate analysis via LLM
+    api_key = os.getenv('OPENAI_API_KEY')
+    if not api_key:
+        raise ValueError("Please set the OPENAI_API_KEY environment variable.")
+    print("KEY LOADED:", os.getenv("OPENAI_API_KEY", None))
+    analyzer = LLMAnalyzer(api_key)
+    analysis = analyzer.analyze(features)
+
+
+    print("\n=== Tone Analysis Summary ===")
+    print(analysis)
+
 
 if __name__ == '__main__':
-    import sys
-    main(sys.argv[1])
+    parser = argparse.ArgumentParser(description='Sales call tone analysis')
+    parser.add_argument('audio_file', type=str, help='Path to WAV file')
+    args = parser.parse_args()
+    main(args.audio_file)

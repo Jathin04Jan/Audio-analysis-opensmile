@@ -1,0 +1,5 @@
+# Env files
+.env
+
+# editor files
+.DS_Store

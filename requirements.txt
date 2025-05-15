@@ -1,3 +1,5 @@
+opensmile
 pandas
 langchain
 openai
+python-dotenv

@@ -1,13 +1,14 @@
 import json
 from langchain import PromptTemplate, LLMChain
-from langchain.llms import OpenAI
+from langchain_community.chat_models import ChatOpenAI
 
 class LLMAnalyzer:
     """
     Uses LangChain to prompt OpenAI LLM for a human-readable tone analysis.
+    Model is set to o4-mini.
     """
-    def __init__(self, openai_api_key: str, model_name: str = 'gpt-4o-mini', temperature: float = 0.7):
-        self.llm = OpenAI(openai_api_key=openai_api_key, model_name=model_name, temperature=temperature)
+    def __init__(self, openai_api_key: str, model_name: str = 'gpt-4.1-mini', temperature: float = 0.7):
+        self.llm = ChatOpenAI(openai_api_key=openai_api_key, model_name=model_name, temperature=temperature)
         self.prompt = PromptTemplate(
             input_variables=['features'],
             template=(
