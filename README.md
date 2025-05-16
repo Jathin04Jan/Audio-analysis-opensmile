@@ -1,6 +1,6 @@
 # Sales Call Tone Analysis
 
-A Python CLI tool that extracts acoustic functionals from sales-call WAV files using OpenSMILE, summarizes them into a JSON, and generates a human-readable tone analysis via OpenAI’s `o4-mini` model (through LangChain).
+A Python CLI tool that extracts acoustic functionals from sales-call WAV files using OpenSMILE, summarizes them into a JSON, and generates a human-readable tone analysis via OpenAI’s `gpt-4.1-mini` model (through LangChain).
 
 ---
 
@@ -24,7 +24,7 @@ A Python CLI tool that extracts acoustic functionals from sales-call WAV files u
 
 - **OpenSMILE functionals** via the `opensmile` Python wrapper  
 - **Feature summarization** into LLM-friendly JSON  
-- **LLM prompt** (o4-mini) through LangChain for a concise tone report  
+- **LLM prompt** (gpt-4.1-mini) through LangChain for a concise tone report  
 - **Simple CLI**: `python main.py path/to/your.wav`  
 - **Environment-driven**: `.env` file for your API key  
 - **Test scripts** to verify both OpenAI and OpenSMILE integration  
@@ -33,10 +33,10 @@ A Python CLI tool that extracts acoustic functionals from sales-call WAV files u
 
 ## Prerequisites
 
-- **Python 3.8+**  
+- **Python 3.10+**  
 - **git**, **curl** (for config download)  
 - **Virtual environment** (strongly recommended)  
-- **OpenAI API key** with access to `o4-mini`  
+- **OpenAI API key** with access to `gpt-4.1-mini`  
 - **Internet connection** (for API calls)  
 
 ---
@@ -67,8 +67,8 @@ tone-analysis/
 1. Clone the repository
 
     ```bash
-    git clone https://github.com/<your-username>/sales-call-tone-analysis.git
-    cd sales-call-tone-analysis
+    git clone https://github.com/Jathin04Jan/Audio-analysis-opensmile.git
+    cd Audio-analysis-opensmile
     ```
 
 2. Create and activate a virtual environment
