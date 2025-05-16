@@ -57,6 +57,10 @@ tone-analysis/
 ├── test_openai.py           # Quick OpenAI API connectivity test
 ├── test_smile.py            # Quick OpenSMILE processing test
 └── test.wav                 # (Optional) sample audio file
+'''
+
+---
+
 
 ## Installation & Setup
 
