@@ -5,3 +5,7 @@ openai
 python-dotenv
 langchain-core
 langchain-community
+torch
+torchvision
+torchaudio
+pyannote.audio

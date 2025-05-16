@@ -25,6 +25,6 @@ def convert_to_model_format(input_path, output_path):
 
 # Example usage
 if __name__ == "__main__":
-    input_file = "audio-rec.mp3"         # Replace with your actual recording
-    output_file = "converted_audio-rec.wav"              # This will be the input to the model
+    input_file = "test2.mp3"         # Replace with your actual recording
+    output_file = "test2.wav"              # This will be the input to the model
     convert_to_model_format(input_file, output_file)
