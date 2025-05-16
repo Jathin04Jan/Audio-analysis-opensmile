@@ -6,3 +6,6 @@
 
 # virtualenv
 .venv
+
+#toneEnv
+toneEnv/
