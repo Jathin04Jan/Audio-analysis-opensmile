@@ -246,4 +246,28 @@ tone-analysis/
   - Confirm your WAV is valid PCM (16-bit, mono or stereo).
 - Module import errors:
   ```bash
-  pip install langchain-community python-dotenv opensmile       
+    pip install langchain-community python-dotenv opensmile
+  ```
+
+## Contributing
+
+1. Fork the repository  
+2. Create a branch:
+    ```bash
+    git checkout -b feature/your-feature
+    ```
+3. Commit your changes:
+    ```bash
+    git commit -am "Add feature"
+    ```
+4. Push to your fork:
+    ```bash
+    git push origin feature/your-feature
+    ```
+5. Open a pull request for review
+
+Please follow the existing code style and include tests or documentation updates where applicable.
+
+## License
+
+This project is licensed under the MIT License.
