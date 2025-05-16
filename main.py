@@ -1,14 +1,14 @@
+#!/usr/bin/env python3
+import os
+import json
 import argparse
+from dotenv import load_dotenv
+
 from open_smile_processor import OpenSmileProcessor
 from feature_summarizer import FeatureSummarizer
 from llm_analyzer import LLMAnalyzer
-from dotenv import load_dotenv
-import os
 
-load_dotenv()
-
-
-def main(audio_file: str):
+def main(audio_file: str, transcript_file: str):
     # 1) Extract acoustic functionals
     smile = OpenSmileProcessor()
     df = smile.extract_features(audio_file)
@@ -20,21 +20,35 @@ def main(audio_file: str):
         print("No features extracted—check your audio or config.")
         return
 
-    # 3) Generate analysis via LLM
-    api_key = os.getenv('OPENAI_API_KEY')
+    # 3) Load transcript JSON
+    if not os.path.exists(transcript_file):
+        raise FileNotFoundError(f"Transcript file not found: {transcript_file}")
+    with open(transcript_file, "r") as jf:
+        transcript = json.load(jf)
+        if not isinstance(transcript, list):
+            raise ValueError("Transcript JSON must be a list of segments")
+
+    # 4) Call LLM for combined analysis
+    api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        raise ValueError("Please set the OPENAI_API_KEY environment variable.")
-    print("KEY LOADED:", os.getenv("OPENAI_API_KEY", None))
+        raise ValueError("Please set OPENAI_API_KEY in your .env file.")
     analyzer = LLMAnalyzer(api_key)
-    analysis = analyzer.analyze(features)
+    summary = analyzer.analyze(features, transcript)
 
+    # 5) Print result
+    print("\n=== Combined Tone & Content Summary ===")
+    print(summary)
 
-    print("\n=== Tone Analysis Summary ===")
-    print(analysis)
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Sales call tone analysis')
-    parser.add_argument('audio_file', type=str, help='Path to WAV file')
-    args = parser.parse_args()
-    main(args.audio_file)
+if __name__ == "__main__":
+    load_dotenv()
+    p = argparse.ArgumentParser(
+        description="Sales-call tone + transcript analysis"
+    )
+    p.add_argument("audio_file",   help="Path to WAV file for acoustic analysis")
+    p.add_argument(
+        "--transcript",
+        required=True,
+        help="Path to JSON transcript file (speaker-labeled)"
+    )
+    args = p.parse_args()
+    main(args.audio_file, args.transcript)

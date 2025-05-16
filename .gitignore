@@ -9,3 +9,7 @@
 
 #toneEnv
 toneEnv/
+*.pyc
+__pycache__/
+*.dylib
+*.so

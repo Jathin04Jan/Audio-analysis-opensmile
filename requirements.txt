@@ -3,3 +3,5 @@ pandas
 langchain
 openai
 python-dotenv
+langchain-core
+langchain-community
