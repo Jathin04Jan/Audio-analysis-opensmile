@@ -42,7 +42,29 @@ def main(audio_file: str, transcript_file: str):
     return summary  # 6) Return features and summary
 
 def runAnalysis(audio_file: str, transcript_file: str):
-    return main(audio_file, transcript_file)
+    # 1) Extract acoustic functionals
+    smile = OpenSmileProcessor()
+    df = smile.extract_features(audio_file)
+
+    # 2) Summarize features
+    summarizer = FeatureSummarizer()
+    features = summarizer.summarize(df)
+    if not features:
+        print("No features extracted—check your audio or config.")
+        return
+    
+    # 4) Call LLM for combined analysis
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise ValueError("Please set OPENAI_API_KEY in your .env file.")
+    analyzer = LLMAnalyzer(api_key)
+    summary = analyzer.analyze(features, transcript_file)
+
+    # 5) Print result
+    print("\n=== Combined Tone & Content Summary ===")
+    print(summary)
+    return summary  # 6) Return features and summary
+
 
 if __name__ == "__main__":
     load_dotenv()
