@@ -69,6 +69,12 @@ def main():
 
 
 def runTranscribe(audio_file: str) -> dict:
+    load_dotenv()
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise ValueError("OPENAI_API_KEY not set")
+    client = OpenAI(api_key=api_key)
+
     """
     Diarize and transcribe an audio file, returning a JSON object.
     """
@@ -108,7 +114,7 @@ def runTranscribe(audio_file: str) -> dict:
     with open(out_path, "w") as jf:
         json.dump(transcript, jf, indent=2)
 
-    return transcript  # Return the transcript JSON object
+    return json.dumps(transcript)  # Return the transcript JSON object
     print(f"Diarized transcript saved to {out_path}")
 
 if __name__ == "__main__":

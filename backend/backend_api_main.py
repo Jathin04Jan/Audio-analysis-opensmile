@@ -1,6 +1,7 @@
 # app/main.py
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import uuid
 import os
@@ -11,6 +12,14 @@ from main import runAnalysis
 
 app = FastAPI()
 
+# CORS middleware for local development
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # or ["*"] during dev
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.post("/api/upload")
 async def upload_call(file: UploadFile = File(...)):
     call_id = str(uuid.uuid4())
@@ -19,6 +28,7 @@ async def upload_call(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, out)
     # 1. transcribe → transcript_json
     transcript = runTranscribe(audio_path)
+    print(f"Transcript: {transcript}")
     # 2. LLM analysis → summary_str
     summary = runAnalysis(audio_path, transcript)
     return JSONResponse({
