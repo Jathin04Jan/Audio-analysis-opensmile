@@ -33,8 +33,21 @@ def main():
 
     # 1) Speaker diarization
     # You’ll need a Hugging Face token in PYANNOTE_AUTH_TOKEN env var
-    diarization = Pipeline.from_pretrained("pyannote/speaker-diarization",
-                                           use_auth_token=os.getenv("PYANNOTE_AUTH_TOKEN"))
+    #diarization = Pipeline.from_pretrained("pyannote/speaker-diarization",
+    #                                       use_auth_token=os.getenv("PYANNOTE_AUTH_TOKEN"))
+    
+    # pick MPS if available, otherwise CPU
+    # choose device
+    device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
+
+    # 1) Speaker diarization
+    diarization = Pipeline.from_pretrained(
+        "pyannote/speaker-diarization",
+        use_auth_token=os.getenv("PYANNOTE_AUTH_TOKEN"),
+    )
+    diarization.to(device)
+
+    # now run inference (this will use MPS if available)
     diar = diarization(audio_file)
 
     # Load audio with pydub for slicing
@@ -81,10 +94,19 @@ def runTranscribe(audio_file: str) -> dict:
     base, _ = os.path.splitext(audio_file)
     out_path = f"{base}_diarized.json"
 
+    # choose device
+    device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
+
     # 1) Speaker diarization
-    diarization = Pipeline.from_pretrained("pyannote/speaker-diarization",
-                                           use_auth_token=os.getenv("PYANNOTE_AUTH_TOKEN"))
+    diarization = Pipeline.from_pretrained(
+        "pyannote/speaker-diarization",
+        use_auth_token=os.getenv("PYANNOTE_AUTH_TOKEN"),
+    )
+    diarization.to(device)
+
+    # now run inference (this will use MPS if available)
     diar = diarization(audio_file)
+
 
     # Load audio with pydub for slicing
     audio = AudioSegment.from_file(audio_file)
